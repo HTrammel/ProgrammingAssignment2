@@ -1,12 +1,17 @@
 #-----------------------------------------------------
 ## cachematrix.R
 ## Author: Harold Trammel
-## Purpose: These two functions cache and provide the inverse of a matrix for future use.  
-## Usage:  The "makeCacheMatrix" function must be called first, but 
-##         the cacheSolve is used for subsequent inversions.  
+## Purpose: To cache and provide the inverse of a matrix for future use.  
+## Usage:  
+##      Given x is a square matrix...
+##      m <- makeCacheMatrix(x)
+##      inv <- cacheSolve(m)
+##
+##      inv <- cacheSolve( makeCacheMatrix(x) ) can be used as well
 #-----------------------------------------------------
 
-## Stores a copy of the inverse of matrix "x". Used by cacheSolve function/
+## Stores a local copy of the inverse of matrix "x". Provides
+## four internal functions for use by cacheSolve()
 makeCacheMatrix <- function(x = matrix()) {
     cached_inversion <- NULL  
     set <- function(y) {
@@ -28,11 +33,12 @@ makeCacheMatrix <- function(x = matrix()) {
           , getInverse = getInverse)
 }
 
-## Return a matrix that is the inverse of 'x'.  If the inverse of 'x'
-## has been stored return that, otherwise invert 'x' and cache it.
+## Returns a matrix that is the inverse of 'x'.  
+## Function is passed an instance of the makeCacheMatrix() function,
+## which provides the set, get, setInverse, and getInverse functions.
+## If inverse of 'x' has not been stored, then solves for inverse.
 cacheSolve <- function(x, ...) {
     cached_inverse <- x$getInverse()
-    
     if (!is.null(cached_inverse)) {
         # if 
         message ("getting cached data...")
